@@ -128,13 +128,9 @@ http://localhost:3000/docs
 
 Swagger UI provides interactive documentation for all available endpoints and allows testing the API directly from the browser using the **Try it out** feature.
 
-### Swagger UI Screenshot
+## Swagger UI Screenshot
 
-> Add your screenshot here after completing Stage 5.
-
-```markdown
 ![Swagger UI](./screenshots/swagger-ui.png)
-```
 
 ---
 
