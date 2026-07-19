@@ -47,7 +47,7 @@ app.get("/tasks", (req, res) => {
   res.status(200).json(tasks);
 });
 
-// Get single task by ID
+// Get single task
 app.get("/tasks/:id", (req, res) => {
   const id = parseInt(req.params.id);
 
@@ -62,29 +62,67 @@ app.get("/tasks/:id", (req, res) => {
   res.status(200).json(task);
 });
 
-// Create a new task
+// Create task
 app.post("/tasks", (req, res) => {
   const { title } = req.body;
 
-  // Validation
   if (!title || title.trim() === "") {
     return res.status(400).json({
       error: "Title is required",
     });
   }
 
-  // Create new task
   const newTask = {
     id: tasks.length > 0 ? tasks[tasks.length - 1].id + 1 : 1,
-    title: title,
+    title,
     done: false,
   };
 
-  // Add task to array
   tasks.push(newTask);
 
-  // Return created task
   res.status(201).json(newTask);
+});
+
+// Update task
+app.put("/tasks/:id", (req, res) => {
+  const id = parseInt(req.params.id);
+
+  const task = tasks.find((task) => task.id === id);
+
+  if (!task) {
+    return res.status(404).json({
+      error: `Task ${id} not found`,
+    });
+  }
+
+  const { title, done } = req.body;
+
+  if (title !== undefined) {
+    task.title = title;
+  }
+
+  if (done !== undefined) {
+    task.done = done;
+  }
+
+  res.status(200).json(task);
+});
+
+// Delete task
+app.delete("/tasks/:id", (req, res) => {
+  const id = parseInt(req.params.id);
+
+  const taskIndex = tasks.findIndex((task) => task.id === id);
+
+  if (taskIndex === -1) {
+    return res.status(404).json({
+      error: `Task ${id} not found`,
+    });
+  }
+
+  tasks.splice(taskIndex, 1);
+
+  res.status(204).send();
 });
 
 // Start Server
